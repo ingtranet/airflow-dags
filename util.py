@@ -11,6 +11,8 @@ from pathlib import Path
 import uuid
 
 import boto3
+import pendulum
+
 
 local_tz = pendulum.timezone('Asia/Seoul')
 
