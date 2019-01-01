@@ -23,7 +23,7 @@ def crawl(media_code, **kwargs):
         'ROBOTSTXT_OBEY': False,
         'FEED_FORMAT': 'jsonlines',
         'FEED_URI': str(temp_file),
-        'LOG_LEVEL': 'INFO'
+        'LOG_LEVEL': 'WARNING'
     })
     
     crawler = crawler_process.create_crawler(DaumNewsSpider)
