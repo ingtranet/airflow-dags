@@ -10,7 +10,7 @@ class DaumNewsSpider(scrapy.Spider):
             meta={'page': 1})
 
     def parse_page(self, response):
-        self.logger.info('Parsing URL: {}'.format(response.url))
+        self.logger.debug('Parsing URL: {}'.format(response.url))
         article_urls = response.css('.list_allnews a.link_thumb::attr("href")').extract()
 
         if len(article_urls):
@@ -24,7 +24,7 @@ class DaumNewsSpider(scrapy.Spider):
 
     
     def parse_article(self, url):
-        self.logger.info('Parsing URL: {}'.format(url))
+        self.logger.debug('Parsing URL: {}'.format(url))
         article = Article(url)
         article.download()
         article.parse()

@@ -9,6 +9,7 @@ from tempfile import TemporaryDirectory
 import os
 from pathlib import Path
 import uuid
+import logging
 
 import boto3
 import pendulum
@@ -17,6 +18,7 @@ import pendulum
 local_tz = pendulum.timezone('Asia/Seoul')
 
 def crawl(media_code, **kwargs):
+    logging.disable(logging.DEBUG)
     execution_date = kwargs['execution_date'].astimezone(tz=local_tz)
     temp_dir = TemporaryDirectory()
     temp_file_name = str(uuid.uuid4()) + '.json'
@@ -26,9 +28,7 @@ def crawl(media_code, **kwargs):
         'USER_AGENT': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:64.0) Gecko/20100101 Firefox/64.0',
         'ROBOTSTXT_OBEY': False,
         'FEED_FORMAT': 'jsonlines',
-        'FEED_URI': str(temp_file),
-        'LOG_FILE': str(Path(temp_dir.name) / 'scrapy.log'),
-        'LOG_LEVEL': 'WARNING'
+        'FEED_URI': str(temp_file)
     })
     
     crawler = crawler_process.create_crawler(DaumNewsSpider)
@@ -50,6 +50,7 @@ def crawl(media_code, **kwargs):
     return temp_file_name
 
 def temp_json_to_parquet(media_code, **kwargs):
+    logging.disable(logging.DEBUG)
     execution_date = kwargs['execution_date'].astimezone(tz=local_tz)
     temp_file_name = kwargs['task_instance'].xcom_pull(task_ids='task_crawl')
 
