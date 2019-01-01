@@ -70,7 +70,7 @@ def temp_json_to_parquet(media_code, **kwargs):
         dfs = pd.read_json(str(temp_file), lines=True, convert_dates=['publish_date'], chunksize=750)
         
         for i, df in enumerate(dfs):
-            file_path = Path(temp_dir) / '{}.parquet.gzip'.format(i)
+            file_path = Path(temp_dir) / '{}.gzip.parquet'.format(i)
             df.to_parquet(str(file_path), compression='gzip')
   
             s3.meta.client.upload_file(str(file_path), 'ingtranet-library', 'daum_news/{}/{}/{}/{}/{}'.format(
