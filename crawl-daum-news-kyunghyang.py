@@ -14,8 +14,8 @@ default_args = {
     'email': ['cookieshake.dev@gmail.com'],
     'email_on_failure': False,
     'email_on_retry': False,
-    'retries': 1,
-    'retry_delay': timedelta(minutes=30)
+    'retries': 3,
+    'retry_delay': timedelta(minutes=5)
 }
 
 dag = DAG('crawl-daum-news-kyunghyang', 
