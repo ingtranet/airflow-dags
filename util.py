@@ -40,6 +40,7 @@ def crawl(media_code, **kwargs):
     crawler_process.start(stop_after_crawl=True)
 
     if 'log_count/ERROR' in crawler.stats.get_stats():
+        temp_dir.cleanup()
         raise Exception('Error log exists')
 
     conn = BaseHook.get_connection('wasabi')
