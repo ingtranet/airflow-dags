@@ -15,11 +15,14 @@ default_args = {
     'email_on_failure': False,
     'email_on_retry': False,
     'retries': 1,
-    'retry_delay': timedelta(minutes=30),
-    'schedule_interval': '0 2 * * *'
+    'retry_delay': timedelta(minutes=30)
 }
 
-dag = DAG('crawl-daum-news-kyunghyang', default_args=default_args)
+dag = DAG('crawl-daum-news-kyunghyang', 
+    default_args=default_args,
+    concurrency=3, 
+    max_active_runs=3,
+    schedule_interval='0 2 * * *')
 
 task_crawl = PythonOperator(
     task_id='task_crawl',
