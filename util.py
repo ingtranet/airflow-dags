@@ -22,7 +22,8 @@ def crawl(media_code, **kwargs):
         'USER_AGENT': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:64.0) Gecko/20100101 Firefox/64.0',
         'ROBOTSTXT_OBEY': False,
         'FEED_FORMAT': 'jsonlines',
-        'FEED_URI': str(temp_file)
+        'FEED_URI': str(temp_file),
+        'LOG_LEVEL': 'INFO'
     })
     
     crawler = crawler_process.create_crawler(DaumNewsSpider)
