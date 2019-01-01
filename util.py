@@ -27,7 +27,7 @@ def crawl(media_code, **kwargs):
         'ROBOTSTXT_OBEY': False,
         'FEED_FORMAT': 'jsonlines',
         'FEED_URI': str(temp_file),
-        'LOG_FILE': str(temp_dir / 'scrapy.log'),
+        'LOG_FILE': str(Path(temp_dir) / 'scrapy.log'),
         'LOG_LEVEL': 'WARNING'
     })
     
