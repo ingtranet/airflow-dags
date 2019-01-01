@@ -30,7 +30,8 @@ def crawl(media_code, **kwargs):
         'FEED_FORMAT': 'jsonlines',
         'FEED_URI': str(temp_file),
         'LOG_FILE': str(Path(temp_dir.name) / 'scrapy.log'),
-        'LOG_LEVEL': 'INFO'
+        'LOG_LEVEL': 'INFO',
+        'DOWNLOAD_DELAY': 0.25
     })
     
     crawler = crawler_process.create_crawler(DaumNewsSpider)
