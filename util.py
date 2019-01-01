@@ -67,7 +67,7 @@ def temp_json_to_parquet(media_code, **kwargs):
         temp_file = Path(temp_dir) / temp_file_name
         s3.Bucket('ingtranet-temp').download_file(temp_file_name, str(temp_file))
 
-        dfs = pd.read_json(str(temp_file), lines=True, convert_dates=[''], chunksize=750)
+        dfs = pd.read_json(str(temp_file), lines=True, convert_dates=['publish_date'], chunksize=750)
         
         for i, df in enumerate(dfs):
             file_path = Path(temp_dir) / '{}.parquet.gzip'.format(i)
