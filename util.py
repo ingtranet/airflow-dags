@@ -12,8 +12,10 @@ import uuid
 
 import boto3
 
+local_tz = pendulum.timezone('Asia/Seoul')
+
 def crawl(media_code, **kwargs):
-    execution_date = kwargs['execution_date']
+    execution_date = kwargs['execution_date'].astimezone(tz=local_tz)
     temp_dir = TemporaryDirectory()
     temp_file_name = str(uuid.uuid4()) + '.json'
     temp_file = Path(temp_dir.name) / temp_file_name
@@ -46,7 +48,7 @@ def crawl(media_code, **kwargs):
     return temp_file_name
 
 def temp_json_to_parquet(media_code, **kwargs):
-    execution_date = kwargs['execution_date']
+    execution_date = kwargs['execution_date'].astimezone(tz=local_tz)
     temp_file_name = kwargs['task_instance'].xcom_pull(task_ids='task_crawl')
 
     conn = BaseHook.get_connection('wasabi')
