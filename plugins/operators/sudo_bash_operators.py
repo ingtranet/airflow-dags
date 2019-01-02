@@ -56,7 +56,7 @@ class SudoBashOperator(BaseOperator):
         """
         logging.info("tmp dir root location: \n" + gettempdir())
         with TemporaryDirectory(prefix='airflowtmp') as tmp_dir:
-            os.chmod(tmp_dir, 0777)
+            os.chmod(tmp_dir, 0o777)
             # Ensure the sudo user has perms to their current working directory for making tempfiles
             # This is not really a security flaw because the only thing in that dir is the
             # temp script, owned by the airflow user and any temp files made by the sudo user
