@@ -61,7 +61,7 @@ class BackfillView(BaseView):
                 self.clear_dag_runs(dag_id, start_date, end_date)
 
             markup_msg = '{0}, your <b>{1}</b> command is being processed for {2} between dates {3} - {4}.'.format(
-                current_user.user.username.title(), command, dag_id, start_date, end_date
+                'Dear user', command, dag_id, start_date, end_date
             )
             flash(Markup(markup_msg))
             url = self.create_airflow_url(dag_id, start_date, end_date)
