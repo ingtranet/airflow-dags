@@ -71,7 +71,7 @@ class BackfillView(BaseView):
 
     @staticmethod
     @provide_session
-    def create_airflow_url(dag_id, start_date, end_date):
+    def create_airflow_url(dag_id, start_date, end_date, **kwargs):
         """
         Creates the airflow url to redirect to. Gets the host_server based on if it's a fabio url or host:port. Then
         queries the database for the execution date, which will be in the range of the start and end date. Can have
