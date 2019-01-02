@@ -9,11 +9,12 @@ from flask_login import current_user, login_required
 from flask_wtf import Form
 
 from airflow.configuration import conf
-from airflow.executors.celery_executor import execute_command, DEFAULT_QUEUE
+from airflow.executors.celery_executor import execute_command
 from airflow.models import DagModel, DagRun, DagStat
 from airflow.settings import Session
 from airflow.utils.state import State
 
+DEFAULT_QUEUE = conf.get('celery', 'DEFAULT_QUEUE')
 
 class CustomDateTimeForm(Form):
     start_date = DateTimeField("Start date", widget=DateTimePickerWidget())
