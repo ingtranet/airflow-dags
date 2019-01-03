@@ -32,7 +32,8 @@ def crawl(media_code, **kwargs):
         'LOG_FILE': str(Path(temp_dir.name) / 'scrapy.log'),
         'LOG_LEVEL': 'INFO',
         'DOWNLOAD_DELAY': 0.25,
-        'CLOSESPIDER_ERRORCOUNT': 1
+        'CLOSESPIDER_ERRORCOUNT': 1,
+        'HTTPERROR_ALLOWED_CODES': [410]
     })
     
     crawler = crawler_process.create_crawler(DaumNewsSpider)
@@ -42,6 +43,10 @@ def crawl(media_code, **kwargs):
     if 'log_count/ERROR' in crawler.stats.get_stats():
         temp_dir.cleanup()
         raise Exception('Error log exists')
+    
+    if not 'item_scraped_count' in crawler.stats.get_stats():
+        temp_dir.cleanup()
+        return ''
 
     conn = BaseHook.get_connection('wasabi')
     s3 = boto3.resource('s3',
@@ -80,4 +85,8 @@ def temp_json_to_parquet(media_code, **kwargs):
                 media_code, execution_date.year, execution_date.month, execution_date.day, file_path.name
             ))
     
-        
+def branch(**kwargs):
+    if kwargs['task_instance'].xcom_pull(task_ids='task_crawl') == '':
+        return None
+    else:
+        return 'task_temp_json_to_parquet'
