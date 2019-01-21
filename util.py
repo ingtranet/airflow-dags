@@ -33,7 +33,9 @@ def crawl(media_code, **kwargs):
         'LOG_LEVEL': 'INFO',
         'DOWNLOAD_DELAY': 0.25,
         'CLOSESPIDER_ERRORCOUNT': 1,
-        'HTTPERROR_ALLOWED_CODES': [410]
+        'HTTPERROR_ALLOWED_CODES': [410],
+        'CONCURRENT_ITEMS': 10,
+        'CONCURRENT_REQUESTS': 2
     })
     
     crawler = crawler_process.create_crawler(DaumNewsSpider)
