@@ -25,7 +25,13 @@ class DaumNewsSpider(scrapy.Spider):
     
     def parse_article(self, url):
         self.logger.debug('Parsing URL: {}'.format(url))
-        article = Article(url, language='ko', request_timeout=30)
+        try:
+            article = Article(url, language='ko', request_timeout=30)
+        except Exception as e:
+            if 'Gone' in str(e):
+                return
+            else:
+                raise e
         article.download()
         article.parse()
 
