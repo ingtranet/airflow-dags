@@ -1,5 +1,6 @@
 import scrapy
 from newspaper import Article
+from newspaper.article import ArticleException
 
 class DaumNewsSpider(scrapy.Spider):
     name = 'daum_news'
@@ -27,13 +28,14 @@ class DaumNewsSpider(scrapy.Spider):
         self.logger.debug('Parsing URL: {}'.format(url))
         try:
             article = Article(url, language='ko', request_timeout=30)
-        except Exception as e:
+            article.download()
+            article.parse()
+        except ArticleException as e:
             if 'Gone' in str(e):
+                self.logger.warn('Gone while parsing article: ' + url)
                 return
             else:
                 raise e
-        article.download()
-        article.parse()
 
         result = {
             'title': article.title,
