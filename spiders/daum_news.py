@@ -41,7 +41,8 @@ class DaumNewsSpider(scrapy.Spider):
             'title': article.title,
             'text': article.text,
             'publish_date': article.publish_date.isoformat(' '),
-            'media_code': self.media_code
+            'media_code': self.media_code,
+            'url': url
         } 
         result.update(self.parse_meta(article.meta_data))
 
