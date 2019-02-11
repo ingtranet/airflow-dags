@@ -1,6 +1,5 @@
 import scrapy
 from newspaper import Article
-from newspaper.article import ArticleException
 
 class DaumNewsSpider(scrapy.Spider):
     name = 'daum_news'

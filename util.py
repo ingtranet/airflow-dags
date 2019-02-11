@@ -1,9 +1,3 @@
-from scrapy.crawler import CrawlerProcess
-from spiders.daum_news import DaumNewsSpider
-
-import pandas as pd
-
-from airflow.hooks.base_hook import BaseHook
 from datetime import datetime, timedelta
 from tempfile import TemporaryDirectory
 import os
@@ -11,13 +5,15 @@ from pathlib import Path
 import uuid
 import logging
 
-import boto3
 import pendulum
 
 
 local_tz = pendulum.timezone('Asia/Seoul')
 
 def crawl(media_code, **kwargs):
+    from scrapy.crawler import CrawlerProcess
+    from spiders.daum_news import DaumNewsSpider
+    
     logging.disable(logging.DEBUG)
     execution_date = kwargs['execution_date'].astimezone(tz=local_tz)
     temp_dir = TemporaryDirectory()
@@ -50,6 +46,9 @@ def crawl(media_code, **kwargs):
         temp_dir.cleanup()
         return ''
 
+    from airflow.hooks.base_hook import BaseHook
+    import boto3
+
     conn = BaseHook.get_connection('wasabi')
     s3 = boto3.resource('s3',
         endpoint_url = conn.extra_dejson['endpoint_url'],
@@ -65,6 +64,10 @@ def temp_json_to_parquet(media_code, **kwargs):
     logging.disable(logging.DEBUG)
     execution_date = kwargs['execution_date'].astimezone(tz=local_tz)
     temp_file_name = kwargs['task_instance'].xcom_pull(task_ids='task_crawl')
+
+    from airflow.hooks.base_hook import BaseHook
+    import boto3
+    import pandas as pd
 
     conn = BaseHook.get_connection('wasabi')
     
