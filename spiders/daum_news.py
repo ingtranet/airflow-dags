@@ -21,32 +21,25 @@ class DaumNewsSpider(scrapy.Spider):
                 meta={'page': page + 1})
                 
         for url in article_urls:
-            yield self.parse_article(url)
+            yield scrapy.Request(url=url, callback=self.parse_article)
 
     
-    def parse_article(self, url):
-        self.logger.debug('Parsing URL: {}'.format(url))
-        try:
-            article = Article(url, language='ko', request_timeout=30)
-            article.download()
-            article.parse()
-        except ArticleException as e:
-            if 'Gone' in str(e):
-                self.logger.warn('Gone while parsing article: ' + url)
-                return
-            else:
-                raise e
+    def parse_article(self, response):
+        self.logger.debug('Parsing URL: {}'.format(response.url))
+        
+        article = Article(response.url, language='ko')
+        article.download(input_html=response.text)
+        article.parse()
 
         result = {
             'title': article.title,
             'text': article.text,
             'publish_date': article.publish_date.isoformat(' '),
             'media_code': self.media_code,
-            'url': url
+            'url': response.url
         } 
         result.update(self.parse_meta(article.meta_data))
-
-        return result
+        yield result
 
     def parse_meta(self, meta):
         article = meta['article']

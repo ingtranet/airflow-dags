@@ -31,11 +31,11 @@ def crawl(media_code, **kwargs):
         'FEED_URI': str(temp_file),
         'LOG_FILE': str(Path(temp_dir.name) / 'scrapy.log'),
         'LOG_LEVEL': 'INFO',
-        'DOWNLOAD_DELAY': 0.25,
+        'DOWNLOAD_DELAY': 0.0,
         'CLOSESPIDER_ERRORCOUNT': 1,
-        'HTTPERROR_ALLOWED_CODES': [410],
-        'CONCURRENT_ITEMS': 10,
-        'CONCURRENT_REQUESTS': 2
+        'HTTPERROR_ALLOWED_CODES': [],
+        'CONCURRENT_ITEMS': 8,
+        'CONCURRENT_REQUESTS': 8,
     })
     
     crawler = crawler_process.create_crawler(DaumNewsSpider)
