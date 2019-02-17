@@ -11,7 +11,7 @@ class DaumNewsSpider(scrapy.Spider):
 
     def parse_page(self, response):
         self.logger.debug('Parsing URL: {}'.format(response.url))
-        article_urls = response.css('.list_allnews a.link_txt::attr("href")').extract()
+        article_urls = response.css('.list_allnews .tit_thumb a.link_txt::attr("href")').extract()
         page = response.meta['page']
 
         if len(article_urls) and page <= 100:
