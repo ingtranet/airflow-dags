@@ -10,3 +10,4 @@ syslog-rfc5424-formatter>=1.0.0,<2.0.0
 gevent==1.4.0
 airflow-exporter==1.0 
 Flask==1.0.3
+tzlocal==1.5.1
