@@ -89,6 +89,6 @@ def temp_json_to_parquet(media_code, **kwargs):
     
 def branch(**kwargs):
     if kwargs['task_instance'].xcom_pull(task_ids='task_crawl') == '':
-        return None
+        return []
     else:
         return 'task_temp_json_to_parquet'
