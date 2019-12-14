@@ -5,7 +5,7 @@ import pendulum
 
 from datetime import datetime, timedelta
 
-from util import crawl, temp_json_to_parquet, branch
+from util import crawl_daumnews
 
 local_tz = pendulum.timezone('Asia/Seoul')
 default_args = {
@@ -27,21 +27,6 @@ dag = DAG('crawl-daum-news-donga',
 task_crawl = PythonOperator(
     task_id='task_crawl',
     provide_context=True,
-    python_callable=crawl,
+    python_callable=crawl_daumnews,
     op_kwargs={'media_code': 190},
     dag=dag)
-
-task_branch = BranchPythonOperator(
-    task_id='task_branch',
-    provide_context=True,
-    python_callable=branch,
-    dag=dag)
-
-task_temp_json_to_parquet = PythonOperator(
-    task_id='task_temp_json_to_parquet',
-    provide_context=True,
-    python_callable=temp_json_to_parquet,
-    op_kwargs={'media_code': 190},
-    dag=dag)
-
-task_crawl >> task_branch >> task_temp_json_to_parquet
