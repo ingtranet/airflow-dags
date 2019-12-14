@@ -10,7 +10,7 @@ import pendulum
 
 local_tz = pendulum.timezone('Asia/Seoul')
 
-def crawl(media_code, **kwargs):
+def crawl_daumnews(media_code, **kwargs):
     from scrapy.crawler import CrawlerProcess
     from spiders.daum_news import DaumNewsSpider
     
@@ -44,54 +44,16 @@ def crawl(media_code, **kwargs):
     
     if not 'item_scraped_count' in crawler.stats.get_stats():
         temp_dir.cleanup()
-        return ''
+        return
 
-    from airflow.hooks.base_hook import BaseHook
-    import boto3
+    import pandas as pd
+    df = pd.read_json(str(temp_file), lines=True, convert_dates=['publish_date'])
+    df.to_parquet(str(temp_file) + '.parquet', index=False, compression='gzip')
 
-    conn = BaseHook.get_connection('wasabi')
-    s3 = boto3.resource('s3',
-        endpoint_url = conn.extra_dejson['endpoint_url'],
-        aws_access_key_id = conn.extra_dejson['aws_access_key_id'],
-        aws_secret_access_key = conn.extra_dejson['aws_secret_access_key'],
-        verify=False)
-    
-    s3.meta.client.upload_file(str(temp_file), 'ingtranet-temp', temp_file_name)
+    from airflow.hooks.S3_hook import S3Hook
+
+    key = f'daum_news/media_code={media_code}/date={execution_date.format("YYYYMMDD")}/0.parquet'
+    hook = S3Hook(s3_conn_id='wasabi')    
+    hook.load_file(str(temp_file), key, 'ingtranet-library')
     temp_dir.cleanup()
     return temp_file_name
-
-def temp_json_to_parquet(media_code, **kwargs):
-    logging.disable(logging.DEBUG)
-    execution_date = kwargs['execution_date'].astimezone(tz=local_tz)
-    temp_file_name = kwargs['task_instance'].xcom_pull(task_ids='task_crawl')
-
-    from airflow.hooks.base_hook import BaseHook
-    import boto3
-    import pandas as pd
-
-    conn = BaseHook.get_connection('wasabi')
-    
-    s3 = boto3.resource('s3',
-        endpoint_url = conn.extra_dejson['endpoint_url'],
-        aws_access_key_id = conn.extra_dejson['aws_access_key_id'],
-        aws_secret_access_key = conn.extra_dejson['aws_secret_access_key'])
-
-    with TemporaryDirectory() as temp_dir:
-        temp_file = Path(temp_dir) / temp_file_name
-        s3.Bucket('ingtranet-temp').download_file(temp_file_name, str(temp_file))
-
-        dfs = pd.read_json(str(temp_file), lines=True, convert_dates=['publish_date'], chunksize=750)
-        
-        for i, df in enumerate(dfs):
-            file_path = Path(temp_dir) / '{}.snappy.parquet'.format(i)
-            df.to_parquet(str(file_path), index=False, compression='snappy')
-  
-            s3.meta.client.upload_file(str(file_path), 'ingtranet-library', 'daum_news_v2/media_code={}/year={}/month={}/day={}/{}'.format(
-                media_code, execution_date.year, execution_date.month, execution_date.day, file_path.name
-            ))
-    
-def branch(**kwargs):
-    if kwargs['task_instance'].xcom_pull(task_ids='task_crawl') == '':
-        return None
-    else:
-        return 'task_temp_json_to_parquet'
