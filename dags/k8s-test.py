@@ -28,5 +28,6 @@ k = KubernetesPodOperator(
     arguments=["echo", "10"],
     name="task-test",
     in_cluster=True,
+    is_delete_operator_pod=True,
     task_id="task",
     dag=dag)
