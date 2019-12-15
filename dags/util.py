@@ -85,7 +85,7 @@ def temp_json_to_parquet(media_code, **kwargs):
         file_path = Path(temp_dir) / '0.gzip.parquet'
         df.to_parquet(str(file_path), index=False, compression='gzip')
 
-        s3.meta.client.upload_file(str(file_path), 'ingtranet-library', f'daum_news/media_code={media_code}/date={execution_date.format("YYYYMMDD")}')
+        s3.meta.client.upload_file(str(file_path), 'ingtranet-raw-data', f'daum_news/media_code={media_code}/date={execution_date.format("YYYYMMDD")}')
     
 def branch(**kwargs):
     if kwargs['task_instance'].xcom_pull(task_ids='task_crawl') == '':
