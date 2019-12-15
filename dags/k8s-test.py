@@ -15,7 +15,7 @@ default_args = {
     'retry_delay': timedelta(minutes=5)
 }
 
-dag = DAG('crawl-daum-news-kyunghyang', 
+dag = DAG('k8s-test', 
     default_args=default_args,
     concurrency=3, 
     max_active_runs=3,
