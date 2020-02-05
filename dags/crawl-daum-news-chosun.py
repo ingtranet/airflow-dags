@@ -25,6 +25,7 @@ dag = DAG('crawl-daum-news-chosun',
 )
 
 crawl = DockerOperator(
+    dag=dag,
     force_pull=True,
     task_id='crawl',
     image='ingtranet/crawler',
