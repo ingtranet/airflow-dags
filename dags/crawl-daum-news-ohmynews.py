@@ -35,6 +35,6 @@ crawl = DockerOperator(
         daum_news -a code=4 -a date={{ ds_nodash }}
     """),
     environment={
-        'MONGO_HOST': 'mongodb0.mrnet:27017'
+        'MONGO_HOST': 'mongodb.mrnet:27017'
     }
 )

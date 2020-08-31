@@ -36,6 +36,6 @@ crawl = DockerOperator(
         naver_blog
     """),
     environment={
-        'MONGO_HOST': 'mongodb0.mrnet:27017'
+        'MONGO_HOST': 'mongodb.mrnet:27017'
     }
 )
