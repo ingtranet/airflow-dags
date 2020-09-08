@@ -27,7 +27,7 @@ dag = DAG('crawl-upbit-candle',
     catchup=False
 )
 
-finish = DummyOperator(task_id='finish', dag=dag)
+start = DummyOperator(task_id='start', dag=dag)
 
 with open('/root/airflow-dags/dags/resources/upbit-market') as f:
     upbit_market = json.loads(f.read())
@@ -47,4 +47,4 @@ for market in [m['market'] for m in upbit_market if m['market'].startswith('KRW'
             'MONGO_HOST': 'mongodb.mrnet:27017'
         }
     )
-    crawl >> finish
+    start >> crawl
