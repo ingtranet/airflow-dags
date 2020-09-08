@@ -28,7 +28,7 @@ dag = DAG('crawl-upbit-candle',
 with open('resources/upbit-market') as f:
     upbit_market = json.load(f.read())
 
-for market in [m['market'] for m in upbit_market if m['market'].startswith('KRW')]
+for market in [m['market'] for m in upbit_market if m['market'].startswith('KRW')]:
     crawl = DockerOperator(
         dag=dag,
         force_pull=True,
