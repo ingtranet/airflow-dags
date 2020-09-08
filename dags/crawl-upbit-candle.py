@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 
 from airflow import DAG
 from airflow.operators.docker_operator import DockerOperator
+from airflow.operators.dummy_operator import DummyOperator
 
 import pendulum
 
@@ -25,6 +26,9 @@ dag = DAG('crawl-upbit-candle',
     schedule_interval='* * * * *',
     catchup=False
 )
+
+finish = DummyOperator(task_id='finish', dag=dag)
+
 with open('/root/airflow-dags/dags/resources/upbit-market') as f:
     upbit_market = json.loads(f.read())
 
@@ -43,3 +47,4 @@ for market in [m['market'] for m in upbit_market if m['market'].startswith('KRW'
             'MONGO_HOST': 'mongodb.mrnet:27017'
         }
     )
+    crawl >> finish
