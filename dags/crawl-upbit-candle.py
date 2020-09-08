@@ -25,7 +25,7 @@ dag = DAG('crawl-upbit-candle',
     schedule_interval='* * * * *',
     catchup=False
 )
-with open('./resources/upbit-market') as f:
+with open('/root/airflow-dags/dags/resources/upbit-market') as f:
     upbit_market = json.loads(f.read())
 
 for market in [m['market'] for m in upbit_market if m['market'].startswith('KRW')]:
