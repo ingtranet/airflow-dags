@@ -32,7 +32,7 @@ for market in [m['market'] for m in upbit_market if m['market'].startswith('KRW'
     crawl = DockerOperator(
         dag=dag,
         force_pull=True,
-        task_id='crawl_' + market.lower().replace('/', '_'),
+        task_id='crawl_' + market.lower().replace('-', '_'),
         image='ingtranet/crawling',
         api_version='auto',
         auto_remove=True,
