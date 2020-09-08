@@ -25,14 +25,14 @@ dag = DAG('crawl-upbit-candle',
     schedule_interval='* * * * *',
     catchup=False
 )
-with open('resources/upbit-market') as f:
-    upbit_market = json.load(f.read())
+with open('./resources/upbit-market') as f:
+    upbit_market = json.loads(f.read())
 
 for market in [m['market'] for m in upbit_market if m['market'].startswith('KRW')]:
     crawl = DockerOperator(
         dag=dag,
         force_pull=True,
-        task_id='crawl',
+        task_id='crawl_' + market.lower().replace('/', '_'),
         image='ingtranet/crawling',
         api_version='auto',
         auto_remove=True,
