@@ -21,7 +21,7 @@ default_args = {
 
 dag = DAG('crawl-upbit-candle', 
     default_args=default_args,
-    concurrency=2, 
+    concurrency=3, 
     max_active_runs=1,
     schedule_interval='* * * * *',
     catchup=False
