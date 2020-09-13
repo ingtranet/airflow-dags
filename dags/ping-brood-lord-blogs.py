@@ -6,6 +6,7 @@ from airflow import DAG
 from airflow.models import Variable
 from airflow.operators.python_operator import PythonOperator
 
+import urllib3
 import pendulum
 
 local_tz = pendulum.timezone('Asia/Seoul')
@@ -29,6 +30,8 @@ dag = DAG('ping-brood-lord-blogs',
 
 
 def ping_url(url):
+    http = urllib3.PoolManager()
+
     r = http.request(
         'GET',
         f'https://www.google.com/ping',
