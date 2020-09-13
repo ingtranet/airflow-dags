@@ -11,19 +11,19 @@ import pendulum
 local_tz = pendulum.timezone('Asia/Seoul')
 default_args = {
     'owner': 'airflow',
-    'start_date': datetime(2020, 9, 8, tzinfo=local_tz),
+    'start_date': datetime(2020, 9, 7, tzinfo=local_tz),
     'email': ['cookieshake.dev@gmail.com'],
     'email_on_failure': False,
     'email_on_retry': False,
-    'retries': 3,
-    'retry_delay': timedelta(minutes=10)
+    'retries': 5,
+    'retry_delay': timedelta(minutes=5)
 }
 
 dag = DAG('crawl-upbit-candle', 
     default_args=default_args,
     concurrency=3, 
     max_active_runs=1,
-    schedule_interval='* * * * *',
+    schedule_interval='0 */3 * * *',
     catchup=False
 )
 
@@ -41,10 +41,11 @@ for market in [m['market'] for m in upbit_market if m['market'].startswith('KRW'
         api_version='auto',
         auto_remove=True,
         command=textwrap.dedent("""
-            upbit_candle -a market={}
+            upbit_candle -a market={} -a datetime={{ ts }}
         """.format(market)),
         environment={
             'MONGO_HOST': 'mongodb.mrnet:27017'
-        }
+        },
+        execution_timeout=timedelta(minutes=5)
     )
     start >> crawl
