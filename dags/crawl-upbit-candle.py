@@ -24,7 +24,7 @@ dag = DAG('crawl-upbit-candle',
     concurrency=3, 
     max_active_runs=1,
     schedule_interval='0 */3 * * *',
-    catchup=False
+    catchup=True
 )
 
 start = DummyOperator(task_id='start', dag=dag)
