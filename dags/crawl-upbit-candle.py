@@ -41,7 +41,7 @@ for market in [m['market'] for m in upbit_market if m['market'].startswith('KRW'
         api_version='auto',
         auto_remove=True,
         command=textwrap.dedent("""
-            upbit_candle -a market={{ market }} -a datetime={{ ts }}
+            upbit_candle -a market={{ params.market }} -a datetime={{ ts }}
         """),
         params={
             'market': market
