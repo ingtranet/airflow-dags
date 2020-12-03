@@ -37,7 +37,7 @@ for market in [m['market'] for m in upbit_market if m['market'].startswith('KRW'
         dag=dag,
         force_pull=True,
         task_id='crawl_' + market.lower().replace('-', '_'),
-        image='ingtranet/crawling',
+        image='harbor.ingtra.net/library/crawling',
         api_version='auto',
         auto_remove=True,
         command=textwrap.dedent("""
