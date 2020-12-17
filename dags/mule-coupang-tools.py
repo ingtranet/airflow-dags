@@ -102,4 +102,4 @@ update_products = DockerOperator(
     dag=dag,
 )
 
-best_categories >> best_categories >> update_searches >> recommend >> update_click_urls >> update_products
+best_categories >> update_searches >> recommend >> update_click_urls >> update_products
