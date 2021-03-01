@@ -38,6 +38,7 @@ for SERVICE in SERVICES:
         force_pull=True,
         image=IMAGE,
         api_version='auto',
+        shm_size=1073741824,
         auto_remove=True,
         command='search-keywords',
         environment={
@@ -52,6 +53,7 @@ for SERVICE in SERVICES:
         force_pull=True,
         image=IMAGE,
         api_version='auto',
+        shm_size=1073741824,
         auto_remove=True,
         command='recommend-products',
         environment={
@@ -66,6 +68,7 @@ for SERVICE in SERVICES:
         force_pull=True,
         image=IMAGE,
         api_version='auto',
+        shm_size=1073741824,
         auto_remove=True,
         command='update-products',
         environment={
@@ -80,6 +83,7 @@ for SERVICE in SERVICES:
         force_pull=True,
         image=IMAGE,
         api_version='auto',
+        shm_size=1073741824,
         auto_remove=True,
         command='misc',
         environment={
