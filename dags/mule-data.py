@@ -34,7 +34,7 @@ SERVICES = ['coupang', 'amazon-us']
 
 for SERVICE in SERVICES:
     search_keywords = DockerOperator(
-        task_id='search_keywords',
+        task_id='search_keywords_' + SERVICE,
         force_pull=True,
         image=IMAGE,
         api_version='auto',
@@ -48,7 +48,7 @@ for SERVICE in SERVICES:
     )
 
     recommend_products = DockerOperator(
-        task_id='recommend_products',
+        task_id='recommend_products_' + SERVICE,
         force_pull=True,
         image=IMAGE,
         api_version='auto',
@@ -62,7 +62,7 @@ for SERVICE in SERVICES:
     )
 
     update_products = DockerOperator(
-        task_id='update_products',
+        task_id='update_products_' + SERVICE,
         force_pull=True,
         image=IMAGE,
         api_version='auto',
@@ -76,7 +76,7 @@ for SERVICE in SERVICES:
     )
 
     misc = DockerOperator(
-        task_id='misc',
+        task_id='misc_' + SERVICE,
         force_pull=True,
         image=IMAGE,
         api_version='auto',
