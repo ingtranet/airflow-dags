@@ -13,8 +13,8 @@ default_args = {
     'email': ['cookieshake.dev@gmail.com'],
     'email_on_failure': False,
     'email_on_retry': False,
-    'retries': 3,
-    'retry_delay': timedelta(minutes=3)
+    'retries': 2,
+    'retry_delay': timedelta(minutes=10)
 }
 
 dag = DAG('mule-data', 
