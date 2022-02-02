@@ -32,7 +32,7 @@ goldbox = DockerOperator(
     auto_remove=True,
     command='goldbox',
     environment={
-        'MONGO_URL': 'mongodb://mongodb.mrnet:27017'
+        'MONGO_URL': 'mongodb://mongodb:27017'
     },
     dag=dag,
 )
@@ -45,7 +45,7 @@ best_categories = DockerOperator(
     auto_remove=True,
     command='best_categories',
     environment={
-        'MONGO_URL': 'mongodb://mongodb.mrnet:27017'
+        'MONGO_URL': 'mongodb://mongodb:27017'
     },
     dag=dag,
 )
@@ -58,7 +58,7 @@ update_searches = DockerOperator(
     auto_remove=True,
     command='update_searches',
     environment={
-        'MONGO_URL': 'mongodb://mongodb.mrnet:27017'
+        'MONGO_URL': 'mongodb://mongodb:27017'
     },
     dag=dag,
 )
@@ -71,7 +71,7 @@ recommend = DockerOperator(
     auto_remove=True,
     command='recommend',
     environment={
-        'MONGO_URL': 'mongodb://mongodb.mrnet:27017'
+        'MONGO_URL': 'mongodb://mongodb:27017'
     },
     dag=dag,
 )
@@ -84,7 +84,7 @@ update_click_urls = DockerOperator(
     auto_remove=True,
     command='update_click_urls',
     environment={
-        'MONGO_URL': 'mongodb://mongodb.mrnet:27017'
+        'MONGO_URL': 'mongodb://mongodb:27017'
     },
     dag=dag,
 )
@@ -97,7 +97,7 @@ update_products = DockerOperator(
     auto_remove=True,
     command='update_products',
     environment={
-        'MONGO_URL': 'mongodb://mongodb.mrnet:27017'
+        'MONGO_URL': 'mongodb://mongodb:27017'
     },
     dag=dag,
 )

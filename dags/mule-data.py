@@ -29,7 +29,7 @@ start = DummyOperator(task_id='start', dag=dag)
 end = DummyOperator(task_id='end', dag=dag)
 
 IMAGE = 'harbor.ingtra.net/library/mule-data'
-MONGO_URL = 'mongodb://mongodb.mrnet:27017'
+MONGO_URL = 'mongodb://mongodb:27017'
 SERVICES = ['coupang', 'amazon-us']
 
 for SERVICE in SERVICES:
