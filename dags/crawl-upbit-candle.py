@@ -47,7 +47,7 @@ for market in [m['market'] for m in upbit_market if m['market'].startswith('KRW'
             'market': market
         },
         environment={
-            'MONGO_HOST': 'mongodb:27017'
+            'MONGO_HOST': 'mongodb.mdc.ingtra.net:27017'
         },
         execution_timeout=timedelta(minutes=5)
     )
