@@ -33,6 +33,7 @@ with DAG(
                 --executor-memory 2G \
                 --executor-cores 1 \
                 --num-executors 1 \
+                --conf spark.jars.ivy=/tmp/.ivy \
                 --conf spark.driver.extraJavaOptions="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=compact" \
                 --conf spark.executor.extraJavaOptions="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=compact" \
                 --conf spark.executor.memoryOverhead=3G \
