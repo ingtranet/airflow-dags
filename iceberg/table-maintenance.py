@@ -33,6 +33,7 @@ def create_operator(name:str, sql:str):
                 --executor-memory 2G \
                 --executor-cores 1 \
                 --num-executors 1 \
+                --conf spark.driver.host=$(hostname -i) \
                 --conf spark.driver.extraJavaOptions="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=compact" \
                 --conf spark.executor.extraJavaOptions="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=compact" \
                 --conf spark.executor.memoryOverhead=3G \
