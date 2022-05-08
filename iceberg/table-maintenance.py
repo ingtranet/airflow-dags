@@ -25,7 +25,7 @@ with DAG(
         arguments=['-c', dedent("""
             cat << __EOF > execute.sql
                 SHOW TABLES
-            __EOF;
+            __EOF
             
             spark-sql
                 --master "k8s://https://kubernetes.default.svc" \
