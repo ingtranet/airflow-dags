@@ -20,7 +20,7 @@ with DAG(
         name="test",
         task_id="test",
         namespace="airflow",
-        service_account_name="airflow-worker",
+        service_account_name="spark",
         image="harbor.ingtra.net/library/spark:3.2.1",
         security_context={
             "runAsUser": 0,
