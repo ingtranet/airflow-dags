@@ -10,15 +10,10 @@ from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import (
     KubernetesPodOperator,
 )
 
-with DAG(
-    "iceberg-table-maintenance",
-    start_date=datetime(2022, 5, 7, tz="Asia/Seoul"),
-    schedule_interval="0 12 * * *",
-    catchup=False
-) as dag:
-    k = KubernetesPodOperator(
-        name="test",
-        task_id="test",
+def create_operator(name, sql):
+    return KubernetesPodOperator(
+        name=name,
+        task_id=name,
         namespace="airflow",
         service_account_name="spark",
         image="harbor.ingtra.net/library/spark:3.2.1",
@@ -27,9 +22,9 @@ with DAG(
             "runAsGroup": 0
         },
         cmds=["bash"],
-        arguments=["-c", dedent("""
+        arguments=["-c", dedent(f"""
             cat << __EOF > execute.sql
-                SHOW TABLES
+            {sql}
             __EOF
             
             $SPARK_HOME/bin/spark-sql \
@@ -65,3 +60,18 @@ with DAG(
         """)],
         do_xcom_push=False
     )
+
+TABLES = [
+    'twitter.sampled_stream'
+]
+
+with DAG(
+    "iceberg-table-maintenance",
+    start_date=datetime(2022, 5, 7, tz="Asia/Seoul"),
+    schedule_interval="0 12 * * *",
+    catchup=False
+) as dag:
+    for table in TABLES:
+        rewrite = create_operator(f'{table}_rewrite', dedent(f"""
+            CALL iceberg.system.rewrite_data_files(table => '{table}');
+        """))
