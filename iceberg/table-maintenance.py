@@ -73,5 +73,5 @@ with DAG(
 ) as dag:
     for table in TABLES:
         rewrite = create_operator(f'{table}_rewrite', dedent(f"""
-            CALL iceberg.system.rewrite_data_files(table => '{table}');
+            CALL iceberg.system.rewrite_data_files(table => '{table}')
         """))
