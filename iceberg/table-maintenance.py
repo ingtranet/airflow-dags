@@ -10,7 +10,7 @@ from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import (
     KubernetesPodOperator,
 )
 
-def create_operator(name, sql):
+def create_operator(name:str, sql:str):
     return KubernetesPodOperator(
         name=name,
         task_id=name,
@@ -24,7 +24,7 @@ def create_operator(name, sql):
         cmds=["bash"],
         arguments=["-c", dedent(f"""
             cat << __EOF > execute.sql
-            {sql}
+            {sql.strip()}
             __EOF
             
             $SPARK_HOME/bin/spark-sql \
