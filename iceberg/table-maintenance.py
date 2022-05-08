@@ -87,11 +87,11 @@ with DAG(
         """))
 
         expire_snapshots = create_operator(f'{table}_expire_snapshots', dedent(f"""
-            CALL iceberg.system.expire_snapshots('{table}')
+            CALL iceberg.system.expire_snapshots('{table}', DATE '9999-12-31')
         """))
 
         remove_orphan = create_operator(f'{table}_remove_orphan', dedent(f"""
-           CALL iceberg.system.remove_orphan_files('{table}')
+           CALL iceberg.system.remove_orphan_files('{table}', DATE '{{{{ prev_ds }}}}')
         """))
 
         start >> rewrite >> expire_snapshots >> remove_orphan
