@@ -70,7 +70,12 @@ with DAG(
     "iceberg-table-maintenance",
     start_date=datetime(2022, 5, 7, tz="Asia/Seoul"),
     schedule_interval="0 12 * * *",
-    catchup=False
+    max_active_runs=1,
+    max_active_tasks=1,
+    catchup=False,
+    default_args={
+        "execution_timeout": timedelta(hours=6)
+    }
 ) as dag:
     for table in TABLES:
         rewrite = create_operator(f'{table}_rewrite', dedent(f"""
