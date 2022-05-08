@@ -11,18 +11,22 @@ from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import (
 )
 
 with DAG(
-    'iceberg-table-maintenance',
-    start_date=datetime(2022, 5, 7, tz='Asia/Seoul'),
-    schedule_interval='0 12 * * *',
+    "iceberg-table-maintenance",
+    start_date=datetime(2022, 5, 7, tz="Asia/Seoul"),
+    schedule_interval="0 12 * * *",
     catchup=False
 ) as dag:
     k = KubernetesPodOperator(
-        name='test',
-        task_id='test',
-        namespace='airflow',
-        image='harbor.ingtra.net/library/spark:3.2.1',
-        cmds=['bash'],
-        arguments=['-c', dedent("""
+        name="test",
+        task_id="test",
+        namespace="airflow",
+        image="harbor.ingtra.net/library/spark:3.2.1",
+        securityContext={
+            "runAsUser": "root",
+            "runAsGroup": "root"
+        },
+        cmds=["bash"],
+        arguments=["-c", dedent("""
             cat << __EOF > execute.sql
                 SHOW TABLES
             __EOF
