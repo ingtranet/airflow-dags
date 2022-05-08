@@ -37,7 +37,6 @@ with DAG(
                 --executor-memory 2G \
                 --executor-cores 1 \
                 --num-executors 1 \
-                --conf spark.jars.ivy=/tmp/.ivy \
                 --conf spark.driver.extraJavaOptions="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=compact" \
                 --conf spark.executor.extraJavaOptions="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=compact" \
                 --conf spark.executor.memoryOverhead=3G \
@@ -57,6 +56,7 @@ with DAG(
                 --conf spark.hadoop.fs.s3a.connection.ssl.enabled=false \
                 --conf spark.hadoop.fs.s3a.fast.upload=true \
                 --conf spark.hadoop.fs.s3a.bucket.all.committer.magic.enabled=true \
+                --conf spark.kubernetes.namespace=airflow \
                 --conf spark.kubernetes.container.image="harbor.ingtra.net/library/spark:3.2.1" \
                 --conf spark.kubernetes.container.image.pullPolicy=Always \
                 --conf spark.kubernetes.executor.podTemplateFile=http://minio.mdc.ingtra.net/bins/spark/executor_pod_template.yaml \
