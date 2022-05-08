@@ -21,7 +21,7 @@ with DAG(
         task_id="test",
         namespace="airflow",
         image="harbor.ingtra.net/library/spark:3.2.1",
-        securityContext={
+        security_context={
             "runAsUser": "root",
             "runAsGroup": "root"
         },
