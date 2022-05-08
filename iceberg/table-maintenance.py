@@ -57,6 +57,7 @@ with DAG(
                 --conf spark.hadoop.fs.s3a.fast.upload=true \
                 --conf spark.hadoop.fs.s3a.bucket.all.committer.magic.enabled=true \
                 --conf spark.kubernetes.namespace=airflow \
+                --conf spark.kubernetes.authenticate.driver.serviceAccountName=airflow-worker \
                 --conf spark.kubernetes.container.image="harbor.ingtra.net/library/spark:3.2.1" \
                 --conf spark.kubernetes.container.image.pullPolicy=Always \
                 --conf spark.kubernetes.executor.podTemplateFile=http://minio.mdc.ingtra.net/bins/spark/executor_pod_template.yaml \
