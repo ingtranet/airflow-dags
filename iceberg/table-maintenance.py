@@ -27,7 +27,7 @@ with DAG(
                 SHOW TABLES
             __EOF
             
-            spark-sql
+            $SPARK_HOME/spark-sql \
                 --master "k8s://https://kubernetes.default.svc" \
                 --driver-memory 1G \
                 --executor-memory 2G \
