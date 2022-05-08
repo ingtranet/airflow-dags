@@ -54,7 +54,7 @@ with DAG(
                 --conf spark.hadoop.fs.s3a.bucket.all.committer.magic.enabled=true \
                 --conf spark.kubernetes.container.image="harbor.ingtra.net/library/spark:3.2.1" \
                 --conf spark.kubernetes.container.image.pullPolicy=Always \
-                --conf spark.kubernetes.executor.podTemplateFile=http://minio.mdc.ingtra.net/bins/spark/executor_pod_template.yaml
+                --conf spark.kubernetes.executor.podTemplateFile=http://minio.mdc.ingtra.net/bins/spark/executor_pod_template.yaml \
                 -f execute.sql
         """)],
         do_xcom_push=False
