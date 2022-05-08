@@ -22,8 +22,8 @@ with DAG(
         namespace="airflow",
         image="harbor.ingtra.net/library/spark:3.2.1",
         security_context={
-            "runAsUser": "root",
-            "runAsGroup": "root"
+            "runAsUser": 0,
+            "runAsGroup": 0
         },
         cmds=["bash"],
         arguments=["-c", dedent("""
