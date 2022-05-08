@@ -5,6 +5,7 @@ from textwrap import dedent
 
 from airflow import DAG
 
+from airflow.operators.dummy import DummyOperator
 from airflow.operators.bash import BashOperator
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import (
     KubernetesPodOperator,
@@ -79,6 +80,18 @@ with DAG(
     }
 ) as dag:
     for table in TABLES:
+        start = DummyOperator(task_id="start")
+
         rewrite = create_operator(f'{table}_rewrite', dedent(f"""
-            CALL iceberg.system.rewrite_data_files(table => '{table}')
+            CALL iceberg.system.rewrite_data_files(table => '{table}', where => 'created_at_ts < now() - INTERVAL 12 HOURS')
         """))
+
+        expire_snapshots = create_operator(f'{table}_expire_snapshots', dedent(f"""
+            CALL iceberg.system.expire_snapshots('{table}')
+        """))
+
+        remove_orphan = create_operator(f'{table}_remove_orphan', dedent(f"""
+           CALL iceberg.system.remove_orphan_files('{table}')
+        """))
+
+        start >> rewrite >> expire_snapshots >> remove_orphan
