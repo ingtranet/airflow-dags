@@ -19,6 +19,7 @@ with DAG(
     k = KubernetesPodOperator(
         name='test',
         task_id='test',
+        namespace='airflow',
         image='harbor.ingtra.net/library/spark:3.2.1',
         cmds=['bash'],
         arguments=['-c', dedent("""
