@@ -37,7 +37,7 @@ def create_operator(name:str, sql:str):
                 --conf spark.driver.host=$(hostname -i) \
                 --conf spark.driver.extraJavaOptions="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=compact" \
                 --conf spark.executor.extraJavaOptions="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=compact" \
-                --conf spark.executor.memoryOverhead=3G \
+                --conf spark.executor.memoryOverhead=4G \
                 --conf spark.shuffle.io.preferDirectBufs=false \
                 --conf spark.network.io.preferDirectBufs=false \
                 --conf spark.eventLog.gcMetrics.youngGenerationGarbageCollectors="Shenandoah Cycles" \
