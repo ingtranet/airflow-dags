@@ -17,7 +17,7 @@ def get_report(report_type:str, **kwargs) -> List[dict]:
         'click': 'clicks',
         'order': 'orders',
         'cancel': 'cancels',
-        'commission': 'commissions'
+        'commission': 'commission'
     }
     with httpx.Client(base_url=PARTNERS_API_URL) as client:
         data = list()
