@@ -97,15 +97,15 @@ with DAG(
         op_kwargs={'report_type': 'cancel'}
     )
 
-    commision = PythonOperator(
-        task_id='commision',
+    commission = PythonOperator(
+        task_id='commission',
         python_callable=get_report_and_insert,
-        op_kwargs={'report_type': 'commision'}
+        op_kwargs={'report_type': 'commission'}
     )
 
     start >> click
     start >> order
     start >> cancel
-    start >> commision
+    start >> commission
 
 
