@@ -15,9 +15,9 @@ def create_operator(name:str, sql:str):
     return KubernetesPodOperator(
         name=name,
         task_id=name,
-        namespace="airflow",
-        service_account_name="spark",
-        image="harbor.ingtra.net/library/spark:3.2.1",
+        namespace='airflow',
+        service_account_name='spark',
+        image='harbor.ingtra.net/library/spark:3.2.1',
         security_context={
             "runAsUser": 0,
             "runAsGroup": 0
@@ -69,18 +69,20 @@ TABLES = [
 ]
 
 with DAG(
-    "iceberg-table-maintenance",
-    start_date=datetime(2022, 5, 7, tz="Asia/Seoul"),
-    schedule_interval="0 12 * * *",
+    'iceberg-table-maintenance',
+    start_date=datetime(2022, 5, 7, tz='Asia/Seoul'),
+    schedule_interval='0 12 * * *',
     max_active_runs=1,
     max_active_tasks=1,
     catchup=False,
     default_args={
-        "execution_timeout": timedelta(hours=6)
+        'execution_timeout': timedelta(hours=6),
+        'retries': 3,
+        'retry_delay': timedelta(hours=1)
     }
 ) as dag:
     for table in TABLES:
-        start = DummyOperator(task_id="start")
+        start = DummyOperator(task_id='start')
 
         rewrite = create_operator(f'{table}_rewrite', dedent(f"""
             CALL iceberg.system.rewrite_data_files(table => '{table}', where => 'created_at_ts < now() - INTERVAL 12 HOURS')

@@ -74,16 +74,18 @@ def get_report_and_insert(report_type:str, **kwargs):
     
 
 with DAG(
-    "coupang-partners-load-report",
-    start_date=datetime(2021, 1, 1, tz="Asia/Seoul"),
-    schedule_interval="0 13 1 */3 *",
+    'coupang-partners-load-report',
+    start_date=datetime(2021, 1, 1, tz='Asia/Seoul'),
+    schedule_interval='0 13 1 */3 *',
     max_active_runs=1,
     max_active_tasks=1,
     default_args={
-        "execution_timeout": timedelta(hours=6)
+        'execution_timeout': timedelta(minutes=5),
+        'retries': 3,
+        'retry_delay': timedelta(hours=1)
     }
 ) as dag:
-    start = DummyOperator(task_id="start")
+    start = DummyOperator(task_id='start')
 
     click = PythonOperator(
         task_id='click',
