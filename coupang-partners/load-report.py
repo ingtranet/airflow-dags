@@ -28,6 +28,7 @@ def get_report(report_type:str, **kwargs) -> List[dict]:
                 'endDate': kwargs['data_interval_end'].format('YYYYMMDD'),
                 'page': page
             })
+            print(f'HTTP Request to {r.url}')
             r.raise_for_status()
             d = r.json()['data']
             data.extend(d)
