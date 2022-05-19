@@ -56,13 +56,15 @@ def get_report_and_insert(report_type:str, **kwargs):
         return
     
     columns, rows = split_columns_and_rows(data)
-    table = f'coupang_partners.{report_type}_report'
     hook = PostgresHook()
+    table = f'coupang_partners.{report_type}_report'
+    primary_keys = hook.get_table_primary_key(table)
+    print(f'Table: {table}, Primary Keys: {primary_keys}')
     result = hook.insert_rows(
         table=table,
         rows=rows,
         target_fields=columns,
-        replace_index=hook.get_table_primary_key(table),
+        replace_index=,
         replace=True
     )
     print(result)
