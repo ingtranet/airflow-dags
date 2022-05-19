@@ -64,7 +64,7 @@ def get_report_and_insert(report_type:str, **kwargs):
         table=table,
         rows=rows,
         target_fields=columns,
-        replace_index=,
+        replace_index=primary_keys,
         replace=True
     )
     print(result)
