@@ -73,7 +73,6 @@ with DAG(
     schedule_interval="0 13 1 */3 *",
     max_active_runs=1,
     max_active_tasks=1,
-    catchup=False,
     default_args={
         "execution_timeout": timedelta(hours=6)
     }
