@@ -61,13 +61,13 @@ def get_report_and_insert(report_type:str, **kwargs):
     hook = IngtranetPostgresHook()
     schema = 'coupang_partners'
     table = f'{report_type}_report'
-    primary_keys = hook.get_table_unique_columns(schema=schema, table=table)
-    print(f'Table: {table}, Primary Keys: {primary_keys}')
+    unique_columns = hook.get_table_unique_columns(schema=schema, table=table)
+    print(f'Table: {table}, Unique Columns: {unique_columns}')
     result = hook.insert_rows(
         table=f'{schema}.{table}',
         rows=rows,
         target_fields=columns,
-        replace_index=primary_keys,
+        replace_index=unique_columns,
         replace=True
     )
     print(result)
