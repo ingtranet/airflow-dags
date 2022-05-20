@@ -3,12 +3,13 @@ from typing import List
 from airflow import DAG
 from airflow.operators.dummy import DummyOperator
 from airflow.operators.python import PythonOperator
-from airflow.providers.postgres.hooks.postgres import PostgresHook
 
 from pendulum import datetime
 from datetime import timedelta
 import inflection
 import httpx
+
+from tools.hooks.postgres import IngtranetPostgresHook
 
 PARTNERS_API_URL = 'https://coupang-partners-proxy.ig.ingtra.net'
 
@@ -57,10 +58,10 @@ def get_report_and_insert(report_type:str, **kwargs):
         return
     
     columns, rows = split_columns_and_rows(data)
-    hook = PostgresHook()
+    hook = IngtranetPostgresHook()
     schema = 'coupang_partners'
     table = f'{report_type}_report'
-    primary_keys = hook.get_table_primary_key(schema=schema, table=table)
+    primary_keys = hook.get_table_unique_columns(schema=schema, table=table)
     print(f'Table: {table}, Primary Keys: {primary_keys}')
     result = hook.insert_rows(
         table=f'{schema}.{table}',
