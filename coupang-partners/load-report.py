@@ -22,7 +22,7 @@ def get_report(report_type:str, **kwargs) -> List[dict]:
     }
     with httpx.Client(base_url=PARTNERS_API_URL) as client:
         data = list()
-        page = 1
+        page = 0
         while True:
             r = client.get(f'/reports/{path[report_type]}', params={
                 'startDate': kwargs['data_interval_start'].format('YYYYMMDD'),
