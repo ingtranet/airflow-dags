@@ -77,7 +77,7 @@ def get_report_and_insert(report_type:str, **kwargs):
 with DAG(
     'coupang-partners-load-report',
     start_date=datetime(2020, 9, 1, tz='Asia/Seoul'),
-    schedule_interval='0 13 * * 7',
+    schedule_interval='0 13 * * *',
     max_active_runs=1,
     max_active_tasks=1,
     default_args={
