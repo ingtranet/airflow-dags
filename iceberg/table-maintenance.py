@@ -70,7 +70,7 @@ from tools.operators import KyuubiOperator
 @dataclass
 class Table:
     name: str
-    rewrite_where: str = '1=1'
+    rewrite_where: str = ''
 
 TABLES = [
     Table(name='twitter.sampled_stream', rewrite_where='created_at_ts < now() - INTERVAL 12 HOURS'),
@@ -93,11 +93,14 @@ with DAG(
 ) as dag:
     start = DummyOperator(task_id='start')
     for table in TABLES:
+
+        if table.rewrite_where:
+            sql = f"CALL iceberg.system.rewrite_data_files(table => '{table.name}', where => '{table.rewrite_where}')"
+        else:
+            sql = f"CALL iceberg.system.rewrite_data_files(table => '{table.name}')"
         rewrite = KyuubiOperator(
             task_id=f'{table.name}_rewrite',
-            sql=dedent(f"""
-                CALL iceberg.system.rewrite_data_files(table => '{table.name}', where => '{table.rewrite_where}')
-            """)
+            sql=sql
         )
 
         rewrite_manifests = KyuubiOperator(
