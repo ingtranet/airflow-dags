@@ -97,7 +97,7 @@ with DAG(
         rewrite = KyuubiOperator(
             task_id=f'{table.name}_rewrite',
             sql=dedent(f"""
-                CALL iceberg.system.rewrite_data_files(table => '{table.name}', where => '{table.rewrite_where}}')
+                CALL iceberg.system.rewrite_data_files(table => '{table.name}', where => '{table.rewrite_where}')
             """)
         )
 
