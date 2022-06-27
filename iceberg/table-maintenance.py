@@ -91,9 +91,8 @@ with DAG(
         'retry_delay': timedelta(hours=1)
     }
 ) as dag:
+    start = DummyOperator(task_id='start')
     for table in TABLES:
-        start = DummyOperator(task_id='start')
-
         rewrite = KyuubiOperator(
             task_id=f'{table.name}_rewrite',
             sql=dedent(f"""
