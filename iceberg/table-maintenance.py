@@ -2,6 +2,7 @@
 from pendulum import datetime
 from datetime import timedelta
 from textwrap import dedent
+from dataclasses import dataclass
 
 from airflow import DAG
 
@@ -66,8 +67,15 @@ from tools.operators import KyuubiOperator
 #         do_xcom_push=False
 #     )
 
+@dataclass
+class Table:
+    name: str
+    rewrite_where: str = '1=1'
+
 TABLES = [
-    'twitter.sampled_stream'
+    Table(name='twitter.sampled_stream', rewrite_where='created_at_ts < now() - INTERVAL 12 HOURS'),
+    Table(name='coupang.review'),
+    Table(name='coupang.review_summary'),
 ]
 
 with DAG(
@@ -87,24 +95,31 @@ with DAG(
         start = DummyOperator(task_id='start')
 
         rewrite = KyuubiOperator(
-            task_id=f'{table}_rewrite',
+            task_id=f'{table.name}_rewrite',
             sql=dedent(f"""
-                CALL iceberg.system.rewrite_data_files(table => '{table}', where => 'created_at_ts < now() - INTERVAL 12 HOURS')
+                CALL iceberg.system.rewrite_data_files(table => '{table.name}', where => '{table.rewrite_where}}')
+            """)
+        )
+
+        rewrite_manifests = KyuubiOperator(
+            task_id=f'{table.name}_rewrite_manifests',
+            sql=dedent(f"""
+                CALL iceberg.system.rewrite_manifests(table => '{table.name}')
             """)
         )
 
         expire_snapshots = KyuubiOperator(
-            task_id=f'{table}_expire_snapshots',
+            task_id=f'{table.name}_expire_snapshots',
             sql=dedent(f"""
-                CALL iceberg.system.expire_snapshots('{table}', DATE '9999-12-31')
+                CALL iceberg.system.expire_snapshots('{table.name}', DATE '9999-12-31')
             """)
         )
 
         remove_orphan = KyuubiOperator(
-            task_id=f'{table}_remove_orphan',
+            task_id=f'{table.name}_remove_orphan',
             sql=dedent(f"""
-                CALL iceberg.system.remove_orphan_files('{table}', DATE '{{{{ prev_ds }}}}')
+                CALL iceberg.system.remove_orphan_files('{table.name}', DATE '{{{{ prev_ds }}}}')
             """)
         )
 
-        start >> rewrite >> expire_snapshots >> remove_orphan
+        start >> rewrite >> rewrite_manifests >> expire_snapshots >> remove_orphan
