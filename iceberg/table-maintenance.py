@@ -76,6 +76,7 @@ TABLES = [
     Table(name='twitter.sampled_stream', rewrite_where='created_at_ts < now() - INTERVAL 12 HOURS'),
     Table(name='coupang.review'),
     Table(name='coupang.review_summary'),
+    Table(name='coupang.price'),
 ]
 
 with DAG(
