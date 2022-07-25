@@ -7,7 +7,7 @@ from pendulum import datetime
 from datetime import timedelta
 
 with DAG(
-    'coupang-partners-load-report',
+    'coupang-get-new-products',
     start_date=datetime(2022, 7, 25, tz='Asia/Seoul'),
     schedule_interval='0 * * * *',
     max_active_runs=1,
