@@ -121,7 +121,7 @@ with DAG(
         remove_orphan = KyuubiOperator(
             task_id=f'{table.name}_remove_orphan',
             sql=dedent(f"""
-                CALL iceberg.system.remove_orphan_files(table -> '{table.name}', older_than => current_timestamp() - INTERVAL 2 DAY, max_concurrent_deletes => 16)
+                CALL iceberg.system.remove_orphan_files(table => '{table.name}', older_than => current_timestamp() - INTERVAL 2 DAY, max_concurrent_deletes => 16)
             """)
         )
 
