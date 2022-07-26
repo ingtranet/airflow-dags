@@ -82,7 +82,7 @@ TABLES = [
 with DAG(
     'iceberg-table-maintenance',
     start_date=datetime(2022, 5, 7, tz='Asia/Seoul'),
-    schedule_interval='0 12 * * *',
+    schedule_interval='30 */3 * * *',
     max_active_runs=1,
     max_active_tasks=1,
     catchup=False,
