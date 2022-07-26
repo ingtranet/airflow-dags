@@ -24,6 +24,6 @@ with DAG(
         name='update_prices',
         namespace='airflow',
         image='harbor.ingtra.net/library/mule-collector:latest',        
-        arguments=['update-prices', '--count', '3000'],
+        arguments=['update-prices', '--count', '3000', '--batch-size', '100'],
         do_xcom_push=False
     )
