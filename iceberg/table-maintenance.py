@@ -114,14 +114,14 @@ with DAG(
         expire_snapshots = KyuubiOperator(
             task_id=f'{table.name}_expire_snapshots',
             sql=dedent(f"""
-                CALL iceberg.system.expire_snapshots('{table.name}', DATE '9999-12-31')
+                CALL iceberg.system.expire_snapshots(table => '{table.name}', older_than => DATE '9999-12-31', max_concurrent_deletes => 16)
             """)
         )
 
         remove_orphan = KyuubiOperator(
             task_id=f'{table.name}_remove_orphan',
             sql=dedent(f"""
-                CALL iceberg.system.remove_orphan_files('{table.name}', DATE '{{{{ prev_ds }}}}')
+                CALL iceberg.system.remove_orphan_files(table -> '{table.name}', older_than => current_timestamp() - INTERVAL 2 DAY, max_concurrent_deletes => 16)
             """)
         )
 
