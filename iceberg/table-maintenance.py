@@ -87,9 +87,9 @@ with DAG(
     max_active_tasks=1,
     catchup=False,
     default_args={
-        'execution_timeout': timedelta(hours=6),
-        'retries': 3,
-        'retry_delay': timedelta(hours=1)
+        'execution_timeout': timedelta(minutes=40),
+        'retries': 2,
+        'retry_delay': timedelta(minutes=20)
     }
 ) as dag:
     start = DummyOperator(task_id='start')
