@@ -9,7 +9,7 @@ from datetime import timedelta
 with DAG(
     'coupang-update-prices',
     start_date=datetime(2022, 7, 25, tz='Asia/Seoul'),
-    schedule_interval='0 * * * *',
+    schedule_interval='*/15 * * * *',
     max_active_runs=1,
     max_active_tasks=1,
     catchup=False,
@@ -24,6 +24,6 @@ with DAG(
         name='update_prices',
         namespace='airflow',
         image='harbor.ingtra.net/library/mule-collector:latest',        
-        arguments=['update-prices', '--count', '3000', '--batch-size', '100'],
+        arguments=['update-prices', '--count', '3000', '--batch-size', '300'],
         do_xcom_push=False
     )
