@@ -9,7 +9,7 @@ from datetime import timedelta
 with DAG(
     'coupang-update-products',
     start_date=datetime(2022, 7, 25, tz='Asia/Seoul'),
-    schedule_interval='0 * * * *',
+    schedule_interval='*/15 * * * *',
     max_active_runs=1,
     max_active_tasks=1,
     catchup=False,
